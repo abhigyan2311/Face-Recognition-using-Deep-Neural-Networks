@@ -1,4 +1,4 @@
-#!/usr/bin/env python2 -W ignore::DeprecationWarning
+#!/usr/bin/env python2
 
 import time
 
@@ -25,6 +25,8 @@ from sklearn.grid_search import GridSearchCV
 from sklearn.mixture import GMM
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 fileDir = os.path.dirname(os.path.realpath(__file__))
 modelDir = os.path.join(fileDir, 'models')
