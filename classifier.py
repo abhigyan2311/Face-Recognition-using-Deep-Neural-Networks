@@ -153,7 +153,7 @@ def train(args):
 
 
 def infer(args, multiple=False):
-    with open(args.classifierModel, 'r') as f:
+    with open('generated-embeddings/classifier.pkl', 'r') as f:
         (le, clf) = pickle.load(f)
 
     for img in args.imgs:
