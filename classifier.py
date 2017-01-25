@@ -40,11 +40,6 @@ def getRep(imgPath, multiple=False):
 
     rgbImg = cv2.cvtColor(bgrImg, cv2.COLOR_BGR2RGB)
 
-    if args.verbose:
-        print("  + Original size: {}".format(rgbImg.shape))
-    if args.verbose:
-        print("Loading the image took {} seconds.".format(time.time() - start))
-
     start = time.time()
 
     if multiple:
@@ -54,8 +49,6 @@ def getRep(imgPath, multiple=False):
         bbs = [bb1]
     if len(bbs) == 0 or (not multiple and bb1 is None):
         raise Exception("Unable to find a face: {}".format(imgPath))
-    if args.verbose:
-        print("Face detection took {} seconds.".format(time.time() - start))
 
     reps = []
     for bb in bbs:
@@ -67,15 +60,9 @@ def getRep(imgPath, multiple=False):
             landmarkIndices=openface.AlignDlib.OUTER_EYES_AND_NOSE)
         if alignedFace is None:
             raise Exception("Unable to align image: {}".format(imgPath))
-        if args.verbose:
-            print("Alignment took {} seconds.".format(time.time() - start))
-            print("This bbox is centered at {}, {}".format(bb.center().x, bb.center().y))
 
         start = time.time()
         rep = net.forward(alignedFace)
-        if args.verbose:
-            print("Neural network forward pass took {} seconds.".format(
-                time.time() - start))
         reps.append((bb.center().x, rep))
     sreps = sorted(reps, key=lambda x: x[0])
     return sreps
