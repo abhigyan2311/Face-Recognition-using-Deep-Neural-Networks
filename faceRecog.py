@@ -1,3 +1,4 @@
 import os
+import subprocess
 
-os.system('./classifier.py "infer generated-embeddings/classifier.pkl test/1.jpg"')
+subprocess.call(['./classifier.py', 'infer', 'generated-embeddings/classifier.pkl', 'test/1.jpg'])
