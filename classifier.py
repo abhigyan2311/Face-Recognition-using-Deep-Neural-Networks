@@ -169,8 +169,6 @@ def infer(args, multiple=False):
         maxI = np.argmax(predictions)
         person = le.inverse_transform(maxI)
         confidence = predictions[maxI]
-        if args.verbose:
-            print("Prediction took {} seconds.".format(time.time() - start))
         if multiple:
             print("Predict {} @ x={} with {:.2f} confidence.".format(person, bbx,
                                                                      confidence))
