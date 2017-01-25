@@ -156,7 +156,7 @@ def infer(args, multiple=False):
     with open('generated-embeddings/classifier.pkl', 'r') as f:
         (le, clf) = pickle.load(f)
 
-    for img in args.imgs:
+    img = args
         print("\n=== {} ===".format(img))
         reps = getRep(img, multiple)
         if len(reps) > 1:
