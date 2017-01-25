@@ -175,7 +175,7 @@ def infer(args, multiple=False):
                 print("Predict {} @ x={} with {:.2f} confidence.".format(person, bbx,
                                                                          confidence))
             else:
-                print("Predict {} with {:.2f} confidence.".format(person, confidence))
+                print("{} {:.2f}".format(person, confidence))
             if isinstance(clf, GMM):
                 dist = np.linalg.norm(rep - clf.means_[maxI])
                 print("  + Distance from the mean: {}".format(dist))
