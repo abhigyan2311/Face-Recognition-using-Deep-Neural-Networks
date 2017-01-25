@@ -157,7 +157,6 @@ def infer(args, multiple=False):
         (le, clf) = pickle.load(f)
 
     for img in args.imgs:
-        print("\n=== {} ===".format(img))
         reps = getRep(img, multiple)
         if len(reps) > 1:
             print("List of faces in image from left to right")
