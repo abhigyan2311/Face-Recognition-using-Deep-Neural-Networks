@@ -157,28 +157,28 @@ def infer(args, multiple=False):
         (le, clf) = pickle.load(f)
 
     img = args
-        print("\n=== {} ===".format(img))
-        reps = getRep(img, multiple)
-        if len(reps) > 1:
-            print("List of faces in image from left to right")
-        for r in reps:
-            rep = r[1].reshape(1, -1)
-            bbx = r[0]
-            start = time.time()
-            predictions = clf.predict_proba(rep).ravel()
-            maxI = np.argmax(predictions)
-            person = le.inverse_transform(maxI)
-            confidence = predictions[maxI]
-            if args.verbose:
-                print("Prediction took {} seconds.".format(time.time() - start))
-            if multiple:
-                print("Predict {} @ x={} with {:.2f} confidence.".format(person, bbx,
-                                                                         confidence))
-            else:
-                print("Predict {} with {:.2f} confidence.".format(person, confidence))
-            if isinstance(clf, GMM):
-                dist = np.linalg.norm(rep - clf.means_[maxI])
-                print("  + Distance from the mean: {}".format(dist))
+    print("\n=== {} ===".format(img))
+    reps = getRep(img, multiple)
+    if len(reps) > 1:
+        print("List of faces in image from left to right")
+    for r in reps:
+        rep = r[1].reshape(1, -1)
+        bbx = r[0]
+        start = time.time()
+        predictions = clf.predict_proba(rep).ravel()
+        maxI = np.argmax(predictions)
+        person = le.inverse_transform(maxI)
+        confidence = predictions[maxI]
+        if args.verbose:
+            print("Prediction took {} seconds.".format(time.time() - start))
+        if multiple:
+            print("Predict {} @ x={} with {:.2f} confidence.".format(person, bbx,
+                                                                     confidence))
+        else:
+            print("Predict {} with {:.2f} confidence.".format(person, confidence))
+        if isinstance(clf, GMM):
+            dist = np.linalg.norm(rep - clf.means_[maxI])
+            print("  + Distance from the mean: {}".format(dist))
 
 
 if __name__ == '__main__':
