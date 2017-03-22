@@ -60,7 +60,8 @@ class MySubscribeCallback(SubscribeCallback):
         pass  # handle incoming presence data
 
     def message(self, pubnub, message):
-        print(message.channel)
+        if(message.channel == 'faceCapture')
+            print(message.message)
 
 
 pubnub.add_listener(MySubscribeCallback())
