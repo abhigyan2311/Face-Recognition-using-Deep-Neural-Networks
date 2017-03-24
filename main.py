@@ -62,7 +62,7 @@ class MySubscribeCallback(SubscribeCallback):
 
     def message(self, pubnub, message):
         if(message.channel == 'faceCapture'):
-            s=subprocess.check_output(['faceRecog.py', 'recog'])
+            s=subprocess.check_output(['./faceRecog.py', 'recog'])
             print(s)
 
 
