@@ -61,6 +61,10 @@ class MySubscribeCallback(SubscribeCallback):
     def presence(self, pubnub, presence):
         pass  # handle incoming presence data
 
+    def publish_callback(result, status):
+        print(status)
+        pass
+
     def message(self, pubnub, message):
         if(message.channel == 'faceCapture'):
             urllib.urlretrieve("https://s3-ap-southeast-1.amazonaws.com/hellomark/capturedImg.jpg", "test/capturedImg.jpg")
@@ -72,6 +76,7 @@ class MySubscribeCallback(SubscribeCallback):
             conf = resArr[1]
             print(name)
             print(conf)
+            pubnub.publish().channel('faceRecog').message([name, conf]).async(publish_callback)
 
 
 pubnub.add_listener(MySubscribeCallback())
