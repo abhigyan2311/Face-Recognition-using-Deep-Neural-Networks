@@ -2,7 +2,7 @@ import os
 import subprocess
 import urllib
 
-def recog(img):
+def recog():
     urllib.urlretrieve("https://s3-ap-southeast-1.amazonaws.com/hellomark/capturedImg.jpg", "test/capturedImg.jpg")
     imgPath='test/capturedImg.jpg'
     s=subprocess.check_output(['./classifier.py', 'infer', 'generated-embeddings/classifier.pkl', imgPath])
@@ -11,5 +11,3 @@ def recog(img):
     name = nameArr[0] + ' ' + nameArr[1]
     conf = resArr[1]
     return (name,conf)
-
-def train(name, ):
