@@ -3,6 +3,7 @@ from pubnub.pubnub import PubNub, SubscribeListener
 from pubnub.callbacks import SubscribeCallback
 from pubnub.enums import PNOperationType, PNStatusCategory
 import subprocess
+import urllib
 
 pnconfig = PNConfiguration()
 pnconfig.subscribe_key = "sub-c-383332aa-dcc0-11e6-b6b1-02ee2ddab7fe"
@@ -62,8 +63,15 @@ class MySubscribeCallback(SubscribeCallback):
 
     def message(self, pubnub, message):
         if(message.channel == 'faceCapture'):
-            s=subprocess.check_output(['./faceRecog.py', 'recog'])
-            print("Hello")
+            urllib.urlretrieve("https://s3-ap-southeast-1.amazonaws.com/hellomark/capturedImg.jpg", "test/capturedImg.jpg")
+            imgPath='test/capturedImg.jpg'
+            s=subprocess.check_output(['./classifier.py', 'infer', 'generated-embeddings/classifier.pkl', imgPath])
+            resArr=s.split()
+            nameArr = resArr[0].split('-')
+            name = nameArr[0] + ' ' + nameArr[1]
+            conf = resArr[1]
+            print(name)
+            print(conf)
 
 
 pubnub.add_listener(MySubscribeCallback())
