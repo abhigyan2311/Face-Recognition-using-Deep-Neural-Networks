@@ -70,6 +70,8 @@ class MySubscribeCallback(SubscribeCallback):
             nameArr = resArr[0].split('-')
             name = nameArr[0] + ' ' + nameArr[1]
             conf = resArr[1]
+            print(conf)
+            print(name)
 
             #code here Aalekh Sir
 
