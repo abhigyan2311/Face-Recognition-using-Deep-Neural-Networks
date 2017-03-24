@@ -70,6 +70,9 @@ class MySubscribeCallback(SubscribeCallback):
             nameArr = resArr[0].split('-')
             name = nameArr[0] + ' ' + nameArr[1]
             conf = resArr[1]
+
+            #code here Aalekh Sir
+
             pubnub.publish().channel('faceRecog').message([name]).sync()
 
 
