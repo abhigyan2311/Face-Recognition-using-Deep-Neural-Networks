@@ -72,7 +72,7 @@ class MySubscribeCallback(SubscribeCallback):
             conf = resArr[1]
             print(name)
             print(conf)
-            pubnub.publish().channel('faceRecog').message([name, conf]).sync()
+            pubnub.publish().channel('faceRecog').message([name]).sync()
 
 
 pubnub.add_listener(MySubscribeCallback())
