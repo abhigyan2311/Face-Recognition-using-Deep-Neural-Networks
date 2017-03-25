@@ -6,6 +6,9 @@ from fbrecog import recognize
 import sys, json
 import subprocess
 import urllib
+import requests
+#import json
+import urllib2
 
 pnconfig = PNConfiguration()
 pnconfig.subscribe_key = "sub-c-383332aa-dcc0-11e6-b6b1-02ee2ddab7fe"
@@ -13,9 +16,9 @@ pnconfig.publish_key = "pub-c-73cca4b9-e219-4f94-90fc-02dd8f018045"
 pnconfig.secret_key = "sec-c-YzcyZjI4NzEtNmUxMi00ZDc0LWI4ZGMtNGUyYmFlZmI1OTQ3"
 pnconfig.ssl = False
 
-access_token = 'EAAO8ErKT0tkBAMZAvvgsKAmg4OIXyAjM2CeUTrAQeib26eSGLlcWkIbY7BK5wreglZC6GiZBqDi8gyOOgfzSSz'
-cookie = 'datr=dfRTWMGsPA7exeoXIj2LX43x; sb=-PRTWLHlqlWfTjtD62dzO59p; c_user=100002221569995; xs=1%3Ad2iAeVIJVH813Q%3A2%3A1490370805%3A4831; fr=0AlYydX1C7b1JYXjo.AWW21x2w4q6cKw-Q-g20bDm-03Q.BYI2pk.Bn.Fh8.0.0.BY1UD1.AWVHr2k9; csm=2; pl=n; lu=gghjXVbPCttQrj2bVnBiUC1w; presence=EDvF3EtimeF1490370848EuserFA21B02221569995A2EstateFDutF1490370848557CEchFDp_5f1B02221569995F3CC'
-fb_dtsg = 'AQFR6XCnO_c6:AQF1CkRDYXg_' #Insert the fb_dtsg parameter obtained from Form Data here.
+data={"accessToken":"EAAO1qxWMufsBAK3EBf6wf1YHojaaMqZBZCeYQhvqZBPOLveYl7hznEAZAPCxL6Nz7rZBZBC7xtv1N7SqOssqdZB8OZAZBSfEtYoq7MBmR2BY7KBZBucLOnmd8aWKQz7Icr2XwPC3xDaI00UNBEcGpBZCssUZARJgejxVlQIZD",
+	  "url":"https://s3-ap-southeast-1.amazonaws.com/hellomark/capturedImg.jpg"}
+API_ENDPOINT="http://helloava.southindia.cloudapp.azure.com:3000/recognize"
 
 pubnub = PubNub(pnconfig)
 
@@ -84,10 +87,17 @@ class MySubscribeCallback(SubscribeCallback):
             if(conf>75):
                 pubnub.publish().channel('faceRecog').message([name]).sync()
             else:
-                path='test/capturedImg.jpg'
-                for line in sys.stdin:
-                    path = line[:-1]
-                print(recognize(path,access_token,cookie,fb_dtsg))
+            	response=requests.post(url=API_ENDPOINT,data=data)
+				#print(response.text)
+				json_data = json.loads(response.text)
+				conf=json_data[0]["recognitions"][0]["certainty"]
+				name=json_data[0]["recognitions"][0]["user"]["name"]
+				print(conf,name)
+				if(conf>0.75):
+					pubnub.publish().channel('faceRecog').message([name]).sync()
+				else:
+					print("not matched")
+                
 
 
 
