@@ -80,26 +80,20 @@ class MySubscribeCallback(SubscribeCallback):
             conf = resArr[1]
             print(conf)
             print(name)
-            print(type(conf))
-
             conf=float(conf)
-            if(conf>75):
+            if(conf>0.75):
                 pubnub.publish().channel('faceRecog').message([name]).sync()
             else:
-            	response=requests.post(url=API_ENDPOINT,data=data)
-		#print(response.text)
-		json_data = json.loads(response.text)
-		conf=json_data[0]["recognitions"][0]["certainty"]
-		name=json_data[0]["recognitions"][0]["user"]["name"]
-		print(conf,name)
-		if(conf>0.75):
-			pubnub.publish().channel('faceRecog').message([name]).sync()
-		else:
-			print("not matched")
-
-
-
-
+                response=requests.post(url=API_ENDPOINT,data=data)
+            	json_data = json.loads(response.text)
+                print(response.text)
+            	conf=json_data[0]["recognitions"][0]["certainty"]
+            	name=json_data[0]["recognitions"][0]["user"]["name"]
+            	print(conf,name)
+            	if(conf>0.75):
+            		pubnub.publish().channel('faceRecog').message([name]).sync()
+            	else:
+            		print("not matched")
 
 pubnub.add_listener(MySubscribeCallback())
 
