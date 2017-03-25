@@ -2,6 +2,8 @@ from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub, SubscribeListener
 from pubnub.callbacks import SubscribeCallback
 from pubnub.enums import PNOperationType, PNStatusCategory
+from fbrecog import recognize
+import sys, json
 import subprocess
 import urllib
 
@@ -10,6 +12,11 @@ pnconfig.subscribe_key = "sub-c-383332aa-dcc0-11e6-b6b1-02ee2ddab7fe"
 pnconfig.publish_key = "pub-c-73cca4b9-e219-4f94-90fc-02dd8f018045"
 pnconfig.secret_key = "sec-c-YzcyZjI4NzEtNmUxMi00ZDc0LWI4ZGMtNGUyYmFlZmI1OTQ3"
 pnconfig.ssl = False
+
+path = './'+path+'.jpg'
+access_token = 'EAAO1qxWMufsBAMYl0IUWKnMhQ2ebDMjtlm5Oh9LB4U6Fbp13U1ewGzSKPovxiWUg3OH7q9YG39bQwGVlxeXjJKi7BonaggZCSzAwn1pHMX3HZAtE34XiLBf1AddBys4mCUErDbkIwJ9f9QFzZBV3yIP9jzubbMk4N3mw4EX8wZDZD'
+cookie = 'datr=dfRTWMGsPA7exeoXIj2LX43x; sb=-PRTWLHlqlWfTjtD62dzO59p; c_user=100002221569995; xs=11%3AO5u2NHgGlMHFKQ%3A2%3A1481897208%3A4831; fr=0AlYydX1C7b1JYXjo.AWVrlN-NQoFxwO-PJS4qyq4MscE.BYI2pk.Bn.AAA.0.0.BYU_T4.AWWKuXn1; csm=2; s=Aa6AwfHffG_4nCdT.BYU_T4; pl=n; lu=ggFeRlLj9_Xkmmb3xPIA46SA; act=1481897312600%2F1; p=-2; presence=EDvF3EtimeF1481897390EuserFA21B02221569995A2EstateFDutF1481897390118CEchFDp_5f1B02221569995F4CC;'
+fb_dtsg = 'AQG9AGMpnGmx%3AAQF8DLfTx81k' #Insert the fb_dtsg parameter obtained from Form Data here.
 
 pubnub = PubNub(pnconfig)
 
@@ -74,9 +81,16 @@ class MySubscribeCallback(SubscribeCallback):
             print(name)
             print(type(conf))
 
-            #code here Aalekh Sir
+            conf=float(conf)
+            if(conf>75):
+                pubnub.publish().channel('faceRecog').message([name]).sync()
+            else:
+                for line in sys.stdin:
+                    path = line[:-1]
+                print(recognize(path,access_token,cookie,fb_dtsg))
 
-            pubnub.publish().channel('faceRecog').message([name]).sync()
+
+            
 
 
 pubnub.add_listener(MySubscribeCallback())
