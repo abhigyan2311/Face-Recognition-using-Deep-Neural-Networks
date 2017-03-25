@@ -72,6 +72,7 @@ class MySubscribeCallback(SubscribeCallback):
             conf = resArr[1]
             print(conf)
             print(name)
+            print(type(conf))
 
             #code here Aalekh Sir
 
