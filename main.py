@@ -7,7 +7,6 @@ import sys, json
 import subprocess
 import urllib
 import requests
-#import json
 import urllib2
 
 pnconfig = PNConfiguration()
@@ -88,16 +87,15 @@ class MySubscribeCallback(SubscribeCallback):
                 pubnub.publish().channel('faceRecog').message([name]).sync()
             else:
             	response=requests.post(url=API_ENDPOINT,data=data)
-				#print(response.text)
-				json_data = json.loads(response.text)
-				conf=json_data[0]["recognitions"][0]["certainty"]
-				name=json_data[0]["recognitions"][0]["user"]["name"]
-				print(conf,name)
-				if(conf>0.75):
-					pubnub.publish().channel('faceRecog').message([name]).sync()
-				else:
-					print("not matched")
-                
+		#print(response.text)
+		json_data = json.loads(response.text)
+		conf=json_data[0]["recognitions"][0]["certainty"]
+		name=json_data[0]["recognitions"][0]["user"]["name"]
+		print(conf,name)
+		if(conf>0.75):
+			pubnub.publish().channel('faceRecog').message([name]).sync()
+		else:
+			print("not matched")
 
 
 
