@@ -86,7 +86,6 @@ class MySubscribeCallback(SubscribeCallback):
             else:
                 response=requests.post(url=API_ENDPOINT,data=data)
             	json_data = json.loads(response.text)
-                print(response.text)
             	conf=json_data[0]["recognitions"][0]["certainty"]
             	name=json_data[0]["recognitions"][0]["user"]["name"]
             	print(conf,name)
