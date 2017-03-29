@@ -7,7 +7,6 @@ import sys, json
 import subprocess
 import urllib
 import requests
-import urllib2
 
 pnconfig = PNConfiguration()
 pnconfig.subscribe_key = "sub-c-383332aa-dcc0-11e6-b6b1-02ee2ddab7fe"
@@ -15,9 +14,15 @@ pnconfig.publish_key = "pub-c-73cca4b9-e219-4f94-90fc-02dd8f018045"
 pnconfig.secret_key = "sec-c-YzcyZjI4NzEtNmUxMi00ZDc0LWI4ZGMtNGUyYmFlZmI1OTQ3"
 pnconfig.ssl = False
 
-data={"accessToken":"EAAO1qxWMufsBAK3EBf6wf1YHojaaMqZBZCeYQhvqZBPOLveYl7hznEAZAPCxL6Nz7rZBZBC7xtv1N7SqOssqdZB8OZAZBSfEtYoq7MBmR2BY7KBZBucLOnmd8aWKQz7Icr2XwPC3xDaI00UNBEcGpBZCssUZARJgejxVlQIZD",
-	  "url":"https://s3-ap-southeast-1.amazonaws.com/hellomark/capturedImg.jpg"}
-API_ENDPOINT="http://helloava.southindia.cloudapp.azure.com:3000/recognize"
+# Python FB Recog
+access_token = 'EAAO1qxWMufsBAK3EBf6wf1YHojaaMqZBZCeYQhvqZBPOLveYl7hznEAZAPCxL6Nz7rZBZBC7xtv1N7SqOssqdZB8OZAZBSfEtYoq7MBmR2BY7KBZBucLOnmd8aWKQz7Icr2XwPC3xDaI00UNBEcGpBZCssUZARJgejxVlQIZD'
+cookie = 'datr=dfRTWMGsPA7exeoXIj2LX43x; sb=-PRTWLHlqlWfTjtD62dzO59p; pl=n; lu=gghjXVbPCttQrj2bVnBiUC1w; c_user=100002221569995; xs=1%3Ad2iAeVIJVH813Q%3A2%3A1490370805%3A4831; fr=0AlYydX1C7b1JYXjo.AWW-esS-alcPE7AfcaXZ4NNrZyo.BYI2pk.Bn.FjW.0.0.BY2uLS.AWU-4em5; csm=2; act=1490771505031%2F13; presence=EDvF3EtimeF1490771581EuserFA21B02221569995A2EstateFDutF1490771581345CEchFDp_5f1B02221569995F2CC'
+fb_dtsg = 'AQEh72FJydmn:AQHJ2PmWf1lE'
+
+#NodeJS FB Recog
+# data={"accessToken":"EAAO1qxWMufsBAK3EBf6wf1YHojaaMqZBZCeYQhvqZBPOLveYl7hznEAZAPCxL6Nz7rZBZBC7xtv1N7SqOssqdZB8OZAZBSfEtYoq7MBmR2BY7KBZBucLOnmd8aWKQz7Icr2XwPC3xDaI00UNBEcGpBZCssUZARJgejxVlQIZD",
+# 	  "url":"https://s3-ap-southeast-1.amazonaws.com/hellomark/capturedImg.jpg"}
+# API_ENDPOINT="http://helloava.southindia.cloudapp.azure.com:3000/recognize"
 
 pubnub = PubNub(pnconfig)
 
@@ -84,11 +89,18 @@ class MySubscribeCallback(SubscribeCallback):
             if(conf>0.75):
                 pubnub.publish().channel('faceRecog').message([name]).sync()
             else:
-                response=requests.post(url=API_ENDPOINT,data=data)
-            	json_data = json.loads(response.text)
-            	conf=json_data[0]["recognitions"][0]["certainty"]
-            	name=json_data[0]["recognitions"][0]["user"]["name"]
-            	print(conf,name)
+                #Python
+                resp = recognize(imgPath,access_token,cookie,fb_dtsg)
+                conf = resp[0]['certainty']
+                name = resp[0]['name']
+                print(conf,name)
+
+                #NodeJS
+                # response=requests.post(url=API_ENDPOINT,data=data)
+            	# json_data = json.loads(response.text)
+            	# conf=json_data[0]["recognitions"][0]["certainty"]
+            	# name=json_data[0]["recognitions"][0]["user"]["name"]
+            	# print(conf,name)
             	if(conf>0.75):
             		pubnub.publish().channel('faceRecog').message([name]).sync()
             	else:
