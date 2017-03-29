@@ -91,7 +91,7 @@ class MySubscribeCallback(SubscribeCallback):
             else:
                 #Python
                 resp = recognize(imgPath,access_token,cookie,fb_dtsg)
-                conf = resp[0]['certainty']
+                conf = resp[0]['certainity']
                 name = resp[0]['name']
                 print(conf,name)
 
