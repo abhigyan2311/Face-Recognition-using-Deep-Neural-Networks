@@ -185,7 +185,7 @@ Rp75
 tp76
 g64
 I00
-S'@.\x03\xcd\xfe\xe2\x03\xc0'
+S'v\x8e\x80\x9baB\x03\xc0'
 p77
 tp78
 bsS'_sparse'
@@ -344,7 +344,7 @@ Rp137
 tp138
 g64
 I00
-S"\x92\x0c\x106`'\xc9?"
+S'\x1d\xa9\xbb0\x80(\xd8?'
 p139
 tp140
 bsS'cache_size'
